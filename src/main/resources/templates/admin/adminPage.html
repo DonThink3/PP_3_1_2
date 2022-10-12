@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+</head>
+<body>
+
+<a href="/admin/users">All Users</a>
+
+<br/>
+
+<a href="/admin/new">Create New User</a>
+
+<br/>
+
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Log Out"/>
+</form>
+
+</body>
+</html>

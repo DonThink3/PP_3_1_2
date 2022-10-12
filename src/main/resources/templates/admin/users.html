@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+</head>
+<body>
+
+Нажмите на необходимого пользователя, чтобы удалить или изменить его
+<div th:each="user : ${users}">
+    <a th:href="@{/admin/user/{id}(id = ${user.getId()})}"
+       th:text="${user.getFirstName() + ' ' + user.getLastName()}">user</a>
+</div>
+
+<br/>
+
+<a href="/admin">Вернуться на главную страницу</a>
+
+</body>
+</html>
