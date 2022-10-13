@@ -19,19 +19,13 @@
 
     </br>
 
-    <label for="email">Enter New Email: </label>
-    <input type="text" th:field="*{email}" id="email"/>
-    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name error</div>
-
-    </br>
-
     <label for="age">Enter New Age: </label>
     <input type="text" th:field="*{age}" id="age"/>
     <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Name error</div>
 
     </br>
 
-    <label for="username">Введите New Username: </label>
+    <label for="username">Введите New Email: </label>
     <input type="text" th:field="*{username}" id="username"/>
     <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div>
 

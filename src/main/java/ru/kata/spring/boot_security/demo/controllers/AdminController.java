@@ -1,13 +1,11 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.servises.AdminService;
 import ru.kata.spring.boot_security.demo.servises.RegistrationService;
 import ru.kata.spring.boot_security.demo.servises.UserService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
@@ -16,8 +14,6 @@ import javax.validation.Valid;
 
 @Controller
 public class AdminController {
-
-    private final AdminService adminService;
     private final UserService userService;
 
     private final RegistrationService registrationService;
@@ -26,8 +22,7 @@ public class AdminController {
 
 
     @Autowired
-    public AdminController(AdminService adminService, UserService userService, RegistrationService registrationService, UserValidator userValidator) {
-        this.adminService = adminService;
+    public AdminController(UserService userService, RegistrationService registrationService, UserValidator userValidator) {
         this.userService = userService;
         this.registrationService = registrationService;
         this.userValidator = userValidator;
@@ -56,7 +51,7 @@ public class AdminController {
 
     @GetMapping("/admin/users")
     public String showAllUsers(Model model) {
-        model.addAttribute("users", adminService.findAllUsers());
+        model.addAttribute("users", userService.findAllUsers());
         return "admin/users";
     }
 

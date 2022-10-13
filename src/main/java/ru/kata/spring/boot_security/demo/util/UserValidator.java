@@ -28,11 +28,8 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
         Optional<User> userCheckByUsername = userService.userByUsername(user.getUsername());
-        Optional<User> userCheckByEmail = userService.userByEmail(user.getEmail());
         if (userCheckByUsername.isPresent()) {
             errors.rejectValue("username", "", "Данное имя пользователя уже занято");
-        } else if (userCheckByEmail.isPresent()) {
-            errors.rejectValue("email", "", "Данный email уже существует");
         }
     }
 }

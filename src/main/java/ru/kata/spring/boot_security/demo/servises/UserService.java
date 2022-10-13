@@ -24,6 +24,14 @@ public class UserService {
     public User showUser(int id) {
         return usersReposetories.findById(id).orElse(null);
     }
+    @Transactional
+    public void save(User user) {
+        usersReposetories.save(user);
+    }
+
+    public List<User> findAllUsers() {
+        return usersReposetories.findAll();
+    }
 
     @Transactional
     public void update(int id, User updateUser) {
@@ -39,10 +47,6 @@ public class UserService {
 
     public Optional<User> userByUsername(String username) {
         return usersReposetories.findByUsername(username);
-    }
-
-    public Optional<User> userByEmail(String email) {
-        return usersReposetories.findByEmail(email);
     }
 
 }

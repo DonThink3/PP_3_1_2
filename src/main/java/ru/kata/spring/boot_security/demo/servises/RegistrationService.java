@@ -15,21 +15,21 @@ import java.util.Collections;
 @Service
 public class RegistrationService {
     private final UsersReposetories usersReposetories;
-    private final PasswordEncoder passwordEncoder;
     private final RolesReposetories rolesReposetories;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationService(UsersReposetories usersReposetories, PasswordEncoder passwordEncoder, RolesReposetories rolesReposetories) {
+    public RegistrationService(UsersReposetories usersReposetories, RolesReposetories rolesReposetories, PasswordEncoder passwordEncoder) {
         this.usersReposetories = usersReposetories;
-        this.passwordEncoder = passwordEncoder;
         this.rolesReposetories = rolesReposetories;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public void register(User user) {
         Role role = new Role("ROLE_USER");
         user.setRoleList(new ArrayList<>(Collections.singletonList(role)));
-        role.setUser(user);
+        role.setUserList(new ArrayList<>(Collections.singletonList(user)));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersReposetories.save(user);
         rolesReposetories.save(role);

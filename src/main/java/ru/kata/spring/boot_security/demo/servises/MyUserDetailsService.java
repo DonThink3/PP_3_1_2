@@ -28,7 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userDetails = usersReposetories.findByUsername(username);
         if (userDetails.isEmpty()) {
-            throw new UsernameNotFoundException("Пользователь с таким именем не найден");
+            throw new UsernameNotFoundException("Пользователь не найден");
         } else {
             return new MyUserDetails(userDetails.get());
         }
