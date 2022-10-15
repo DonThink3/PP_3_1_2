@@ -1,87 +1,60 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.servises.RegistrationService;
+import ru.kata.spring.boot_security.demo.security.MyUserDetails;
+import ru.kata.spring.boot_security.demo.servises.RoleService;
 import ru.kata.spring.boot_security.demo.servises.UserService;
-import ru.kata.spring.boot_security.demo.util.UserValidator;
 
-import javax.validation.Valid;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class AdminController {
     private final UserService userService;
+    private final RoleService roleService;
 
-    private final RegistrationService registrationService;
-
-    private final UserValidator userValidator;
 
 
     @Autowired
-    public AdminController(UserService userService, RegistrationService registrationService, UserValidator userValidator) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.registrationService = registrationService;
-        this.userValidator = userValidator;
+        this.roleService = roleService;
     }
 
     @GetMapping("/admin")
-    public String adminPage() {
+    public String adminPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
+        model.addAttribute("admin", userDetails.getUser());
+        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("roles", roleService.findAllRoles());
+        model.addAttribute("newUser", new User());
         return "admin/adminPage";
     }
 
-    @GetMapping("/admin/new")
-    public String createUser(Model model) {
-        model.addAttribute("user", new User());
-        return "admin/new";
-    }
-
     @PostMapping("/admin/new")
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        userValidator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "admin/new";
-        }
-        registrationService.register(user);
-        return "redirect:/admin/users";
-    }
-
-    @GetMapping("/admin/users")
-    public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.findAllUsers());
-        return "admin/users";
-    }
-
-    @GetMapping("/admin/user/{id}")
-    public String showUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.showUser(id));
-        return "admin/show";
-    }
-
-    @GetMapping("/admin/user/{id}/edit")
-    public String editUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.showUser(id));
-        return "admin/edit";
+    public String create(@ModelAttribute("user") User user, @RequestParam("roles") Set<Role> roles) {
+        userService.save(user,roles);
+        return "redirect:/admin";
     }
 
     @PatchMapping("/admin/user/{id}/edit")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         @PathVariable int id) {
-        userValidator.validate(user, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "admin/edit";
-        }
-        userService.update(id, user);
-        return "redirect:/admin/users";
+    public String update(@ModelAttribute("user") User user,
+                         @PathVariable int id, @RequestParam("roles") Set<Role> roles) {
+        userService.update(id, user, roles);
+        return "redirect:/admin";
     }
 
     @DeleteMapping("/admin/user/{id}/delete")
     public String deleteUser(@PathVariable("id") int id) {
         userService.delete(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 }

@@ -1,26 +1,81 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Spring Security Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User information page</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-
-<p>Ваши данные</p>
-<br/>
-<a th:text="${'FirstName: ' + user.getFirstName()}">name</a>
-</br>
-<a th:text="${'LastName: ' + user.getLastName()}">lastName</a>
-</br>
-<a th:text="${'Email: ' + user.getUsername()}">email</a>
-</br>
-<a th:text="${'Age: ' + user.getAge()}">age</a>
-
-<br/>
-
-<form th:method="POST" th:action="@{/logout}">
-    <input type="submit" value="Log Out"/>
-</form>
-
+<div class="container-fluid">
+    <div class="row">
+        <!--Заголовок-->
+        <div class="col-sm-12 p-2 bg-dark text-white ">
+            <a class="font-weight-bold text-white" th:text="${user.username}">Email </a>
+            <a> with roles:</a>
+            <a th:each="role : ${user.roleList}">
+                <a th:text="${role.getShortRole()}">Roles</a>
+            </a>
+            <a th:href="@{/logout}" class="float-right text-secondary"> Logout </a>
+        </div>
+        <!--Кнопка User слева-->
+        <div class="col-sm-2" style="padding-left: 0px; padding-right: 0px">
+            <ul class="nav nav-tabs flex-column">
+                <li class="nav-pills">
+                    <!--Маркер #user на кнопку.  -->
+                    <a class="nav-link active" data-toggle="tab" href="#user">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-10 height: 1200 px" style="height: 1000px; background: #F7F7F7">
+            <!--Вкладка для юзера-->
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="user">
+                    <div class="col-sm-12 p-3">
+                        <h1>User information page</h1>
+                    </div>
+                    <table class="table table-striped bg-white">
+                        <tbody class="border">
+                        <tr>
+                            <th>About User</th>
+                        </tr>
+                    <tr>
+                        <td>
+                            <form th:method="GET" th:object="${user}">
+                                <table class="table table-header table-hover bg-white" th:cols="9">
+                                    <thead class="thead align-content-center">
+                                    <tr class="b">
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${user.id}">User ID</td>
+                                        <td th:text="${user.firstName}">First Name</td>
+                                        <td th:text="${user.lastName}">Last Name</td>
+                                        <td th:text="${user.age}">Age</td>
+                                        <td th:text="${user.username}">Email</td>
+                                        <td> <a th:each="role : ${user.roleList}">
+                                            <a th:text="${role.getShortRole()}">Roles</a>
+                                        </a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

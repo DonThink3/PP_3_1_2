@@ -2,18 +2,20 @@ package ru.kata.spring.boot_security.demo.models;
 
 
 import org.hibernate.annotations.Cascade;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private String role;
 
     @ManyToMany
@@ -37,11 +39,11 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -55,5 +57,9 @@ public class Role implements GrantedAuthority {
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
+    }
+
+    public String getShortRole() {
+        return this.role.substring(5);
     }
 }

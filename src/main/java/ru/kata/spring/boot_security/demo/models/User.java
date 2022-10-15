@@ -7,7 +7,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.annotations.CascadeType;
 
 @Entity
@@ -16,34 +19,25 @@ import org.hibernate.annotations.CascadeType;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @NotEmpty(message = "FirstName не должно быть пустым")
-    @Size(min = 2, max = 30, message = "FirstName должно быть в пределах от 2 до 30 символов")
     private String firstName;
 
-    @NotEmpty(message = "LastName не должно быть пустым")
-    @Size(min = 2, max = 30, message = "LastName должно быть в пределах от 2 до 30 символов")
     private String lastName;
 
     @Column(name = "email")
-    @Email(message = "Несоотвествие форме Email")
-    @NotEmpty(message = "Email не должен быть пустым")
     private String username;
 
-    @Min(value = 0, message = "Age должен быть больше, чем 0")
     private int age;
 
-    @NotEmpty(message = "Password не должен быть пустым")
     private String password;
 
     @ManyToMany(mappedBy = "userList")
-    @Cascade(CascadeType.DELETE)
-    private List<Role> roleList;
+    private Set<Role> roleList = new HashSet<>();
 
     public User() {}
 
-    public User(int id, String firstName, String lastName, String username, int age, String password) {
+    public User(Integer id, String firstName, String lastName, String username, int age, String password) {
         this(firstName, lastName, username, age, password);
         this.id = id;
 
@@ -56,11 +50,11 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -88,11 +82,11 @@ public class User {
         this.age = age;
     }
 
-    public List<Role> getRoleList() {
+    public Set<Role> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<Role> roleList) {
+    public void setRoleList(Set<Role> roleList) {
         this.roleList = roleList;
     }
 

@@ -8,9 +8,7 @@ import ru.kata.spring.boot_security.demo.servises.RoleService;
 import ru.kata.spring.boot_security.demo.servises.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * password - admin
@@ -19,27 +17,20 @@ import java.util.List;
 public class AccountOfAdmin {
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public AccountOfAdmin(UserService userService, RoleService roleService) {
+    public AccountOfAdmin(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @PostConstruct
     public void admin() {
         User admin = new User("admin","admin",
-                "admin@email.ru", 20, "$2a$12$3NnpSCW24QGSrDBlctXR/uMDiJZmqE87hQDFKY0odOU.A5/6G2Nd6");
+                "admin@email.ru", 20, "admin");
         Role roleUser  = new Role("ROLE_USER");
         Role roleAdmin  = new Role("ROLE_ADMIN");
-        admin.setRoleList(new ArrayList<>(List.of(roleUser, roleAdmin)));
-        roleUser.setUserList(new ArrayList<>(Collections.singletonList(admin)));
-        roleAdmin.setUserList(new ArrayList<>(Collections.singletonList(admin)));
         if (userService.userByUsername(admin.getUsername()).isEmpty()) {
-            userService.save(admin);
-            roleService.saveRole(roleUser);
-            roleService.saveRole(roleAdmin);
+            userService.save(admin, new HashSet<>(Set.of(roleUser, roleAdmin)));
         }
     }
 }
