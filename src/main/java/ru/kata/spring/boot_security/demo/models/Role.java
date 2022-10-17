@@ -1,27 +1,23 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
-import org.hibernate.annotations.Cascade;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String role;
 
-    @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "roleList")
     private List<User> userList;
 
     public Role() {}

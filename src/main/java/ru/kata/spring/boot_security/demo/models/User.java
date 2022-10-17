@@ -1,17 +1,9 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @NamedEntityGraph(name = "User.role", attributeNodes = @NamedAttributeNode("roleList"))
@@ -20,7 +12,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String firstName;
 
     private String lastName;
@@ -32,8 +23,11 @@ public class User {
 
     private String password;
 
-    @ManyToMany(mappedBy = "userList")
-    private Set<Role> roleList = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roleList;
 
     public User() {}
 

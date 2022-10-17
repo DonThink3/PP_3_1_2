@@ -152,7 +152,7 @@
                                                                                         </div>
                                                                                         <div class="form-group text-center">
                                                                                             <strong>Email</strong>
-                                                                                            <input type="text"
+                                                                                            <input type="email"
                                                                                                    class="form-control"
                                                                                                    name="username"
                                                                                                    th:value="${user.username}"
@@ -160,7 +160,7 @@
                                                                                         </div>
                                                                                         <div class="form-group text-center">
                                                                                             <strong>Password</strong>
-                                                                                            <input type="text"
+                                                                                            <input type="password"
                                                                                                    class="form-control"
                                                                                                    name="password"
                                                                                                    id="edit-password"/>
@@ -240,7 +240,8 @@
                                                                                                class="form-control"
                                                                                                name="firstName"
                                                                                                th:value="${user.firstName}"
-                                                                                               id="delete-firstName"/>
+                                                                                               id="delete-firstName"
+                                                                                               readonly/>
                                                                                     </div>
                                                                                     <div class="form-group text-center">
                                                                                         <strong>Last name</strong>
@@ -248,7 +249,8 @@
                                                                                                class="form-control"
                                                                                                name="lastName"
                                                                                                th:value="${user.lastName}"
-                                                                                               id="delete-lastName"/>
+                                                                                               id="delete-lastName"
+                                                                                               readonly/>
                                                                                     </div>
                                                                                     <div class="form-group text-center">
                                                                                         <strong>Age</strong>
@@ -256,15 +258,17 @@
                                                                                                class="form-control"
                                                                                                name="age"
                                                                                                th:value="${user.age}"
-                                                                                               id="delete-age"/>
+                                                                                               id="delete-age"
+                                                                                               readonly/>
                                                                                     </div>
                                                                                     <div class="form-group text-center">
                                                                                         <strong>Email</strong>
-                                                                                        <input type="text"
+                                                                                        <input type="email"
                                                                                                class="form-control"
                                                                                                name="email"
                                                                                                th:value="${user.username}"
-                                                                                               id="delete-email"/>
+                                                                                               id="delete-email"
+                                                                                               readonly/>
                                                                                     </div>
                                                                                     <div class="form-group text-center">
                                                                                         <strong>Role</strong>
@@ -336,12 +340,12 @@
                                                     </div>
                                                     <div class="form-group text-center">
                                                         <label for="username"><b>E-mail</b></label>
-                                                        <input type="text" class="form-control" id="username"
+                                                        <input type="email" class="form-control" id="username"
                                                                th:field="*{username}">
                                                     </div>
                                                     <div class="form-group text-center">
                                                         <label for="password"><b>Password</b></label>
-                                                        <input type="text" class="form-control" id="password"
+                                                        <input type="password" class="form-control" id="password"
                                                                th:field="*{password}">
                                                     </div>
                                                     <div class="form-group text-center">
@@ -350,7 +354,7 @@
                                                                 multiple="multiple" size="2">
                                                             <option th:each="role : ${roles}"
                                                                     th:text="${role.getShortRole()}"
-                                                                    th:value="${role.getId()}"/>
+                                                                    th:value="${role.id}"/>
                                                         </select>
                                                     </div>
                                                 </table>

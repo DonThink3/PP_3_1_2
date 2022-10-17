@@ -20,7 +20,6 @@ public class MyUserDetails implements UserDetails {
     }
 
     @Override
-    @EntityGraph(value = "User.role", type = EntityGraph.EntityGraphType.LOAD)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> list = new HashSet<>();
         for (Role role : user.getRoleList()) {
